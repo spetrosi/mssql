@@ -6,11 +6,6 @@ on:  # yamllint disable-line rule:truthy
       - synchronize
       - reopened
       - edited
-  merge_group:
-    branches:
-      - main
-    types:
-      - checks_requested
 permissions:
   contents: read
 jobs:
