@@ -42,3 +42,9 @@ jobs:
         run: >-
           echo '${{ github.event.pull_request.title }}' |
           npx commitlint --verbose
+
+      - name: Run commitlint on PR title
+        env:
+          PR_NUMBER: ${{ github.event.number }}
+        run: >-
+          git -c sequence.editor=: rebase -i origin/main -x 'sh pr_number_to_commit.sh'
