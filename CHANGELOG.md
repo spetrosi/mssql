@@ -1,6 +1,40 @@
 Changelog
 =========
 
+[0.1.0] - 2023-06-07
+--------------------
+
+### Bug Fixes
+
+- fix: Test fix PR (#2)
+
+- fix!: Test feature PR (#3)
+
+  A longer description of the new feature containing:
+  
+  1. Numbered list
+  2. With several numbers
+  
+  Also containing a bullet list:
+  * Bullet 1
+  * Bullet 2
+  
+  And even containing a code block:
+  ```
+  Sample
+  Code
+  Block
+  ```
+
+### Other Changes
+
+- test: Empty test commit (#1)
+
+  Empty test description
+
+- ci: Add a github action to append PR number to commits (#4)
+
+
 [1.3.0] - 2023-02-16
 --------------------
 
