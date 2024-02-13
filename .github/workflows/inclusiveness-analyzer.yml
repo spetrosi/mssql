@@ -1,0 +1,30 @@
+# This workflow checks out code and scans the content changed or added in the 
+# last commit for offensive / exclusive terms.
+# The scan will provide context on the found terms and alternatvies that can be
+# used instead.
+
+name: Inclusiveness Analyser scan
+
+on:
+  push:
+  workflow_dispatch:
+
+jobs:
+  Inclusiveness-Analyser-scan:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    - name: Inclusiveness Analyzer
+      uses: microsoft/InclusivenessAnalyzer@v1.0.1
+      with:
+        # Fails the step if a non-inclusive term is found
+        # failOnNonInclusiveTerm: # optional, default is false
+        # Only scan files added or modified in last commit when checkout step has "with: fetch-depth: 2" configured
+        # excludeUnchangedFiles: # optional, default is true
+        # Comma separated list of file patterns to exclude from analysis
+        # excludeFiles: # optional
+        # Comma separated list of non-inclusive terms to exclude from analysis
+        # excludeTerms: # optional
+              
