@@ -190,7 +190,7 @@
 
 - name: Gather package facts
   package_facts:
-  no_log: "{{ ansible_verbosity < 2 }}"
+  no_log: "{{ ansible_verbosity < 3 }}"
 
 - name: Set fact with the currently installed SQL Server version if any
   set_fact:
@@ -724,7 +724,7 @@
 
     - name: Gather package facts
       package_facts:
-      no_log: "{{ ansible_verbosity < 2 }}"
+      no_log: "{{ ansible_verbosity < 3 }}"
 
     # Setting MSSQL_SA_PASSWORD inline for security because setting it with
     # environment: reveals the value when running playbooks with high verbosity
@@ -808,7 +808,7 @@
 
     - name: Gather package facts
       package_facts:
-      no_log: "{{ ansible_verbosity < 2 }}"
+      no_log: "{{ ansible_verbosity < 3 }}"
 
     - name: Change the edition of MSSQL
       block:
