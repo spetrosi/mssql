@@ -1,0 +1,11 @@
+---
+# VIOLATION: Test file using include_role directly instead of wrapper
+- name: Test MSSQL role violations
+  hosts: all
+  tasks:
+    - name: Run mssql role incorrectly
+      ansible.builtin.include_role:
+        name: mssql
+      vars:
+        mssql_password: "TestPassword123"
+        mssql_version: "2022"

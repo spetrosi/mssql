@@ -1,0 +1,10 @@
+---
+# VIOLATION: Variables in defaults/ not prefixed with mssql_
+database_port: 1433
+sql_version: "2022"
+
+# VIOLATION: Internal variable (double underscore) in defaults/
+__internal_flag: false
+
+# Correct variable for comparison
+mssql_correct_variable: true

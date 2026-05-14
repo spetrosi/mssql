@@ -1,0 +1,11 @@
+---
+# VIOLATION: Internal variables in vars/ not prefixed with __mssql_
+internal_packages:
+  - mssql-server
+  - mssql-tools
+
+# VIOLATION: User-facing variable in vars/ (should be in defaults/)
+mssql_user_option: "value"
+
+# Correct internal variable for comparison
+__mssql_correct_internal: true

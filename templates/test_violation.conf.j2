@@ -1,0 +1,4 @@
+# VIOLATION: Missing ansible_managed header and role fingerprint
+[mssql]
+port = {{ mssql_tcp_port | d(1433) }}
+password = {{ mssql_password }}

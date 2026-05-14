@@ -1,0 +1,8 @@
+---
+# VIOLATION: Handler with sensitive data not using secure_logging
+- name: Apply database configuration with password
+  ansible.builtin.command: >
+    /opt/mssql-tools/bin/sqlcmd -S localhost -U sa -P {{ mssql_password }}
+    -Q "RECONFIGURE"
+  no_log: true
+  changed_when: true

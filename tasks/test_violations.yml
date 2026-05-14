@@ -1,0 +1,42 @@
+---
+# This file intentionally violates CodeRabbit rules for testing
+
+# VIOLATION 1: Using hardcoded no_log: true instead of parametrized
+- name: Get database password
+  ansible.builtin.command: cat /etc/mssql/password
+  register: db_password
+  no_log: true
+  changed_when: false
+
+# VIOLATION 2: Using yum instead of package module
+- name: Install SQL Server packages
+  ansible.builtin.yum:
+    name: mssql-server
+    state: present
+
+# VIOLATION 3: Using package but missing OSTree use: parameter
+- name: Install additional tools
+  ansible.builtin.package:
+    name: mssql-tools
+    state: present
+
+# VIOLATION 4: Using third-party collection
+- name: Create archive of logs
+  community.general.archive:
+    path: /var/log/mssql
+    dest: /tmp/mssql-logs.tar.gz
+
+# VIOLATION 5: Not using FQCN for system role
+- name: Configure firewall
+  include_role:
+    name: firewall
+  vars:
+    firewall_port: 1433
+
+# VIOLATION 6: package_facts without verbosity-based no_log
+- name: Gather package information
+  package_facts:
+
+# VIOLATION 7: command without changed_when
+- name: Check SQL Server status
+  ansible.builtin.command: systemctl status mssql-server
