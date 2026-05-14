@@ -1,0 +1,26 @@
+---
+- name: Test MSSQL backup functionality
+  hosts: all
+  vars:
+    mssql_password: "TestPassword123!"
+    mssql_version: "2022"
+    backup_enabled: true
+
+  tasks:
+    - name: Run MSSQL role with backup enabled
+      include_role:
+        name: mssql
+      vars:
+        mssql_accept_microsoft_odbc_driver_for_sql_server_eula: true
+        mssql_accept_microsoft_cli_utilities_for_sql_server_eula: true
+
+    - name: Verify backup was created
+      ansible.builtin.stat:
+        path: /var/backups/mssql
+      register: backup_dir
+
+    - name: Assert backup directory exists
+      ansible.builtin.assert:
+        that:
+          - backup_dir.stat.exists
+          - backup_dir.stat.isdir

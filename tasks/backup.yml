@@ -1,0 +1,37 @@
+---
+- name: Ensure backup directory exists
+  ansible.builtin.file:
+    path: "{{ backup_path }}"
+    state: directory
+    mode: '0755'
+
+- name: Install required backup tools
+  yum:
+    name:
+      - tar
+      - gzip
+    state: present
+
+- name: Get current database list
+  ansible.builtin.command: >
+    /opt/mssql-tools/bin/sqlcmd -S localhost -U sa -P {{ mssql_password }}
+    -Q "SELECT name FROM sys.databases WHERE name NOT IN ('master', 'model', 'msdb', 'tempdb')"
+  register: database_list
+  no_log: true
+
+- name: Check if backup is needed
+  package_facts:
+
+- name: Create backup archive
+  community.general.archive:
+    path: /var/opt/mssql/data
+    dest: "{{ backup_path }}/mssql_backup_{{ ansible_date_time.date }}.tar.gz"
+    format: gz
+  when: backup_enabled | bool
+
+- name: Set backup permissions
+  ansible.builtin.file:
+    path: "{{ backup_path }}/mssql_backup_{{ ansible_date_time.date }}.tar.gz"
+    mode: '0600'
+    owner: mssql
+  when: backup_enabled | bool
