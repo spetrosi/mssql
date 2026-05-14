@@ -121,6 +121,29 @@ reviews:
         **Referencing other system roles:**
         - Use FQCN: `fedora.linux_system_roles.<rolename>`
 
+        **Idempotency:**
+        - Tasks must be idempotent - safe to run multiple times without unintended changes
+        - Use proper state parameters (present/absent, started/stopped, etc.)
+        - Command/shell tasks should use creates/removes or changed_when to avoid false changes
+        - Example:
+          ```yaml
+          - name: Initialize database
+            ansible.builtin.command: /usr/bin/initialize-db
+            args:
+              creates: /var/lib/db/initialized.flag
+          ```
+
+        **Check mode support:**
+        - Critical tasks should support check mode (--check flag)
+        - Use check_mode: false only when absolutely necessary (e.g., fact gathering)
+        - Test that role works with --check --diff
+
+        **Test coverage requirement:**
+        - When adding new tasks to tasks/main.yml or creating new task files, verify that corresponding test coverage exists in tests/
+        - New functionality MUST include test files (tests/tests_*.yml) that exercise the new code paths
+        - Tests should verify both success scenarios and failure/edge cases
+        - If this PR adds new tasks but does not include new or updated tests, flag it and request test coverage
+
     # ========================================
     # Handlers
     # ========================================
@@ -143,6 +166,20 @@ reviews:
             ansible.builtin.include_tasks: tasks/run_role_with_clear_facts.yml
             vars:
               <rolename>_<parameter>: <value>
+          ```
+
+        **Test quality requirements:**
+        - Tests should verify both success and failure scenarios
+        - Use assert module to verify expected state after role execution
+        - Include cleanup tasks to ensure tests are rerunnable
+        - Tests should be idempotent - running twice should not cause failures
+        - Example verification:
+          ```yaml
+          - name: Verify service is running
+            ansible.builtin.assert:
+              that:
+                - ansible_facts.services['mssql-server.service'].state == 'running'
+              fail_msg: "SQL Server service is not running"
           ```
 
     # ========================================
