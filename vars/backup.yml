@@ -1,0 +1,7 @@
+---
+# Internal backup configuration
+backup_packages:
+  - tar
+  - gzip
+
+mssql_backup_script: /usr/local/bin/mssql_backup.sh
