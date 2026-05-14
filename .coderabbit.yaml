@@ -1,13 +1,10 @@
+# yaml-language-server: $schema=https://coderabbit.ai/integrations/schema.v2.json
 # CodeRabbit configuration for linux-system-roles
 # Based on conventions from https://linux-system-roles.github.io/contribute.html
 # Replace <rolename> with actual role name when copying to other roles
 
 chat:
   art: false
-
-finishing_touches:
-  unit_tests:
-    enabled: false
 
 reviews:
   # Disable fun features
@@ -25,6 +22,11 @@ reviews:
   suggested_labels: false
   high_level_summary_in_walkthrough: false
 
+  # Disable finishing touches
+  finishing_touches:
+    unit_tests:
+      enabled: false
+
   path_instructions:
     # ========================================
     # Ansible Tasks - Core role logic
@@ -38,7 +40,7 @@ reviews:
             ansible.builtin.command: sensitive command
             no_log: "{{ <rolename>_secure_logging }}"
           ```
-          And set <rolename>_secure_logging to true in defaults/main.yml
+          Ensure `<rolename>_secure_logging: true` is defined in defaults/main.yml
 
         - For facts modules (package_facts, service_facts):
           ```yaml
@@ -46,7 +48,6 @@ reviews:
             ansible.builtin.package_facts:
             no_log: "{{ ansible_verbosity < 2 }}"
           ```
-          NOTE: `no_log` must be at the SAME indentation level as the module name (task-level parameter), NOT indented under it
 
         - NEVER use hardcoded `no_log: true` - always parametrize
 
