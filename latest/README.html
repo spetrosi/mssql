@@ -58,8 +58,9 @@ SOFTWARE.
   </style>
   <style type="text/css">code{white-space: pre;}</style>
   <style type="text/css">
+html { -webkit-text-size-adjust: 100%; }
 pre > code.sourceCode { white-space: pre; position: relative; }
-pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
 pre > code.sourceCode > span:empty { height: 1.2em; }
 .sourceCode { overflow: visible; }
 code.sourceCode > span { color: inherit; text-decoration: inherit; }
@@ -70,7 +71,7 @@ div.sourceCode { overflow: auto; }
 }
 @media print {
 pre > code.sourceCode { white-space: pre-wrap; }
-pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
 }
 pre.numberSource code
   { counter-reset: source-line 0; }
@@ -143,8 +144,8 @@ Server Settings</a>
 <li><a href="#general-settings-variables"
 id="toc-general-settings-variables">General Settings Variables</a>
 <ul>
-<li><a href="#mssql_accept_microsoft_odbc_driver_17_for_sql_server_eula"
-id="toc-mssql_accept_microsoft_odbc_driver_17_for_sql_server_eula">mssql_accept_microsoft_odbc_driver_17_for_sql_server_eula</a></li>
+<li><a href="#mssql_accept_microsoft_odbc_driver_for_sql_server_eula"
+id="toc-mssql_accept_microsoft_odbc_driver_for_sql_server_eula">mssql_accept_microsoft_odbc_driver_for_sql_server_eula</a></li>
 <li><a href="#mssql_accept_microsoft_cli_utilities_for_sql_server_eula"
 id="toc-mssql_accept_microsoft_cli_utilities_for_sql_server_eula">mssql_accept_microsoft_cli_utilities_for_sql_server_eula</a></li>
 <li><a href="#mssql_accept_microsoft_sql_server_standard_eula"
@@ -153,6 +154,8 @@ id="toc-mssql_accept_microsoft_sql_server_standard_eula">mssql_accept_microsoft_
 id="toc-mssql_password">mssql_password</a></li>
 <li><a href="#mssql_edition"
 id="toc-mssql_edition">mssql_edition</a></li>
+<li><a href="#mssql_tools_versions"
+id="toc-mssql_tools_versions">mssql_tools_versions</a></li>
 <li><a href="#mssql_enable_sql_agent"
 id="toc-mssql_enable_sql_agent">mssql_enable_sql_agent</a></li>
 <li><a href="#mssql_tune_for_fua_storage"
@@ -195,6 +198,8 @@ SQL Server as a Confined Application Variables</a>
 id="toc-mssql_run_selinux_confined">mssql_run_selinux_confined</a></li>
 <li><a href="#mssql_manage_selinux"
 id="toc-mssql_manage_selinux">mssql_manage_selinux</a></li>
+<li><a href="#mssql_secure_logging"
+id="toc-mssql_secure_logging">mssql_secure_logging</a></li>
 </ul></li>
 <li><a
 href="#configuring-sql-server-as-a-confined-application-example-playbook"
@@ -315,6 +320,8 @@ id="toc-mssql_tls_remote_src">mssql_tls_remote_src</a></li>
 id="toc-mssql_tls_version">mssql_tls_version</a></li>
 <li><a href="#mssql_tls_force"
 id="toc-mssql_tls_force">mssql_tls_force</a></li>
+<li><a href="#mssql_tls_self_sign"
+id="toc-mssql_tls_self_sign">mssql_tls_self_sign</a></li>
 </ul></li>
 <li><a href="#tls-certificates-example-playbooks"
 id="toc-tls-certificates-example-playbooks">TLS Certificates Example
@@ -350,6 +357,10 @@ id="toc-mssql_ha_configure">mssql_ha_configure</a></li>
 id="toc-mssql_ha_ag_cluster_type">mssql_ha_ag_cluster_type</a></li>
 <li><a href="#mssql_ha_replica_type"
 id="toc-mssql_ha_replica_type">mssql_ha_replica_type</a></li>
+<li><a href="#mssql_ha_ag_secondary_role_allow_connections"
+id="toc-mssql_ha_ag_secondary_role_allow_connections">mssql_ha_ag_secondary_role_allow_connections</a></li>
+<li><a href="#mssql_ha_ag_read_only_routing_list"
+id="toc-mssql_ha_ag_read_only_routing_list">mssql_ha_ag_read_only_routing_list</a></li>
 <li><a href="#mssql_ha_endpoint_port"
 id="toc-mssql_ha_endpoint_port">mssql_ha_endpoint_port</a></li>
 <li><a href="#mssql_ha_cert_name"
@@ -366,6 +377,10 @@ id="toc-mssql_ha_endpoint_name">mssql_ha_endpoint_name</a></li>
 id="toc-mssql_ha_ag_name">mssql_ha_ag_name</a></li>
 <li><a href="#mssql_ha_db_names"
 id="toc-mssql_ha_db_names">mssql_ha_db_names</a></li>
+<li><a href="#mssql_ha_ag_is_contained"
+id="toc-mssql_ha_ag_is_contained">mssql_ha_ag_is_contained</a></li>
+<li><a href="#mssql_ha_ag_reuse_system_db"
+id="toc-mssql_ha_ag_reuse_system_db">mssql_ha_ag_reuse_system_db</a></li>
 </ul></li>
 <li><a href="#configuring-pacemaker-variables"
 id="toc-configuring-pacemaker-variables">Configuring Pacemaker
@@ -480,12 +495,20 @@ Server Settings</h1>
 <p>These variables apply to general SQL Server configuration.</p>
 <h2 id="general-settings-variables">General Settings Variables</h2>
 <h3
-id="mssql_accept_microsoft_odbc_driver_17_for_sql_server_eula">mssql_accept_microsoft_odbc_driver_17_for_sql_server_eula</h3>
+id="mssql_accept_microsoft_odbc_driver_for_sql_server_eula">mssql_accept_microsoft_odbc_driver_for_sql_server_eula</h3>
 <p>Set this variable to <code>true</code> to indicate that you accept
-EULA for installing the <code>msodbcsql17</code> package.</p>
-<p>The license terms for this product can be downloaded from <a
-href="https://aka.ms/odbc17eula">https://aka.ms/odbc17eula</a> and found
-in <code>/usr/share/doc/msodbcsql17/LICENSE.txt</code>.</p>
+EULA for installing packages <code>msodbcsql17</code>,
+<code>msodbcsql18</code>.</p>
+<p>The license terms for this product can be found in the following
+places:</p>
+<ul>
+<li>For version 17, online at <a
+href="https://aka.ms/odbc17eula">https://aka.ms/odbc17eula</a> and
+locally in <code>/usr/share/doc/msodbcsql17/LICENSE.txt</code>.</li>
+<li>For version 18, online at <a
+href="https://aka.ms/odbc18eula">https://aka.ms/odbc18eula</a> and
+locally in <code>/usr/share/doc/msodbcsql18/LICENSE.txt</code>.</li>
+</ul>
 <p>Default: <code>false</code></p>
 <p>Type: <code>bool</code></p>
 <h3
@@ -542,6 +565,31 @@ SQL Server settings with environment variables on Linux</a>.</li>
 </ul>
 <p>Default: <code>null</code></p>
 <p>Type: <code>string</code></p>
+<h3 id="mssql_tools_versions">mssql_tools_versions</h3>
+<p>List of versions of SQL Tools package (mssql-tools) to install and
+use <code>sqlcmd</code> from.</p>
+<p>The role uses <code>sqlcmd</code> for the following tasks:</p>
+<ul>
+<li>Checking password for the sa user.</li>
+<li>Running T-SQL scripts with variables <a
+href="#mssql_pre_input_sql_file-and-mssql_post_input_sql_file">mssql_pre_input_sql_file
+and mssql_post_input_sql_file</a>, <a
+href="#mssql_pre_input_sql_content-and-mssql_post_input_sql_content">mssql_pre_input_sql_content
+and mssql_post_input_sql_content</a>.</li>
+</ul>
+<p>By default, installs and uses the latest version 18.</p>
+<p>You can set this variable to <code>[17, 18]</code> to install two
+versions in parallel. In the case when this variable contains multiple
+elements, the role installs both but uses latest provided version.</p>
+<p>The role does not remove mssql-tools packages if you unset a version
+with this variable.</p>
+<p>If you use version 18 and <a
+href="#mssql_tls_enable">mssql_tls_enable</a> with self-signed
+certificates, you must set <a
+href="#mssql_tls_self_sign">mssql_tls_self_sign</a> to
+<code>true</code>.</p>
+<p>Default: <code>[18]</code></p>
+<p>Type: <code>list</code></p>
 <h3 id="mssql_enable_sql_agent">mssql_enable_sql_agent</h3>
 <p>Optional: Set this variable to <code>true</code> or
 <code>false</code> to enable or disable the SQL agent.</p>
@@ -589,7 +637,7 @@ Server with the minimum required variables.</p>
 <div class="sourceCode" id="cb1"><pre
 class="sourceCode yaml"><code class="sourceCode yaml"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="kw">-</span><span class="at"> </span><span class="fu">hosts</span><span class="kw">:</span><span class="at"> all</span></span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">vars</span><span class="kw">:</span></span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">mssql_accept_microsoft_odbc_driver_17_for_sql_server_eula</span><span class="kw">:</span><span class="at"> </span><span class="ch">true</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">mssql_accept_microsoft_odbc_driver_for_sql_server_eula</span><span class="kw">:</span><span class="at"> </span><span class="ch">true</span></span>
 <span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">mssql_accept_microsoft_cli_utilities_for_sql_server_eula</span><span class="kw">:</span><span class="at"> </span><span class="ch">true</span></span>
 <span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">mssql_accept_microsoft_sql_server_standard_eula</span><span class="kw">:</span><span class="at"> </span><span class="ch">true</span></span>
 <span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">mssql_version</span><span class="kw">:</span><span class="at"> </span><span class="dv">2019</span></span>
@@ -672,6 +720,20 @@ type <a href="#mssql_ha_endpoint_port">mssql_ha_endpoint_port</a>.</li>
 </ol>
 <p>Default: <code>false</code></p>
 <p>Type: <code>bool</code></p>
+<h3 id="mssql_secure_logging">mssql_secure_logging</h3>
+<p>If <code>true</code>, suppress potentially sensitive output from
+tasks that handle credentials, secrets, and other sensitive data by
+setting <code>no_log: true</code> on those tasks. This prevents
+passwords, API tokens, SA passwords, and similar sensitive information
+from appearing in Ansible logs and console output.</p>
+<p>If you need to debug issues with credential handling or secret
+management, you can temporarily set
+<code>mssql_secure_logging: false</code> to see the full output from
+these tasks. However, be aware that this may expose sensitive
+information in logs, so it should only be used in development or
+troubleshooting scenarios.</p>
+<p>Default: <code>true</code></p>
+<p>Type: <code>bool</code></p>
 <h2
 id="configuring-sql-server-as-a-confined-application-example-playbook">Configuring
 SQL Server as a Confined Application Example Playbook</h2>
@@ -680,7 +742,7 @@ SQL Server as a confined application.</p>
 <div class="sourceCode" id="cb2"><pre
 class="sourceCode yaml"><code class="sourceCode yaml"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="kw">-</span><span class="at"> </span><span class="fu">hosts</span><span class="kw">:</span><span class="at"> all</span></span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">vars</span><span class="kw">:</span></span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">mssql_accept_microsoft_odbc_driver_17_for_sql_server_eula</span><span class="kw">:</span><span class="at"> </span><span class="ch">true</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">mssql_accept_microsoft_odbc_driver_for_sql_server_eula</span><span class="kw">:</span><span class="at"> </span><span class="ch">true</span></span>
 <span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">mssql_accept_microsoft_cli_utilities_for_sql_server_eula</span><span class="kw">:</span><span class="at"> </span><span class="ch">true</span></span>
 <span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">mssql_accept_microsoft_sql_server_standard_eula</span><span class="kw">:</span><span class="at"> </span><span class="ch">true</span></span>
 <span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">mssql_version</span><span class="kw">:</span><span class="at"> </span><span class="dv">2022</span></span>
@@ -756,7 +818,7 @@ SQL script files and content to SQL Server</h3>
 <div class="sourceCode" id="cb3"><pre
 class="sourceCode yaml"><code class="sourceCode yaml"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="kw">-</span><span class="at"> </span><span class="fu">hosts</span><span class="kw">:</span><span class="at"> all</span></span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">vars</span><span class="kw">:</span></span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">mssql_accept_microsoft_odbc_driver_17_for_sql_server_eula</span><span class="kw">:</span><span class="at"> </span><span class="ch">true</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">mssql_accept_microsoft_odbc_driver_for_sql_server_eula</span><span class="kw">:</span><span class="at"> </span><span class="ch">true</span></span>
 <span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">mssql_accept_microsoft_cli_utilities_for_sql_server_eula</span><span class="kw">:</span><span class="at"> </span><span class="ch">true</span></span>
 <span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">mssql_accept_microsoft_sql_server_standard_eula</span><span class="kw">:</span><span class="at"> </span><span class="ch">true</span></span>
 <span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">mssql_version</span><span class="kw">:</span><span class="at"> </span><span class="dv">2019</span></span>
@@ -931,7 +993,7 @@ port in firewall.</p>
 <div class="sourceCode" id="cb4"><pre
 class="sourceCode yaml"><code class="sourceCode yaml"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="kw">-</span><span class="at"> </span><span class="fu">hosts</span><span class="kw">:</span><span class="at"> all</span></span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">vars</span><span class="kw">:</span></span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">mssql_accept_microsoft_odbc_driver_17_for_sql_server_eula</span><span class="kw">:</span><span class="at"> </span><span class="ch">true</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">mssql_accept_microsoft_odbc_driver_for_sql_server_eula</span><span class="kw">:</span><span class="at"> </span><span class="ch">true</span></span>
 <span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">mssql_accept_microsoft_cli_utilities_for_sql_server_eula</span><span class="kw">:</span><span class="at"> </span><span class="ch">true</span></span>
 <span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">mssql_accept_microsoft_sql_server_standard_eula</span><span class="kw">:</span><span class="at"> </span><span class="ch">true</span></span>
 <span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">mssql_version</span><span class="kw">:</span><span class="at"> </span><span class="dv">2019</span></span>
@@ -1027,6 +1089,12 @@ private key files on host if they exist at
 respectively.</p>
 <p>Default: <code>false</code></p>
 <p>Type: <code>bool</code></p>
+<h3 id="mssql_tls_self_sign">mssql_tls_self_sign</h3>
+<p>Whether certificates that you use are self-signed or not.</p>
+<p>Based on this, the role decides whether to run <code>sqlcmd</code>
+with the <code>-C</code> argument to trust certificates.</p>
+<p>Default: <code>false</code></p>
+<p>Type: <code>bool</code></p>
 <h2 id="tls-certificates-example-playbooks">TLS Certificates Example
 Playbooks</h2>
 <h3
@@ -1039,7 +1107,7 @@ primary node.</p>
 <div class="sourceCode" id="cb6"><pre
 class="sourceCode yaml"><code class="sourceCode yaml"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="kw">-</span><span class="at"> </span><span class="fu">hosts</span><span class="kw">:</span><span class="at"> all</span></span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">vars</span><span class="kw">:</span></span>
-<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">mssql_accept_microsoft_odbc_driver_17_for_sql_server_eula</span><span class="kw">:</span><span class="at"> </span><span class="ch">true</span></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">mssql_accept_microsoft_odbc_driver_for_sql_server_eula</span><span class="kw">:</span><span class="at"> </span><span class="ch">true</span></span>
 <span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">mssql_accept_microsoft_cli_utilities_for_sql_server_eula</span><span class="kw">:</span><span class="at"> </span><span class="ch">true</span></span>
 <span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">mssql_accept_microsoft_sql_server_standard_eula</span><span class="kw">:</span><span class="at"> </span><span class="ch">true</span></span>
 <span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">mssql_version</span><span class="kw">:</span><span class="at"> </span><span class="dv">2019</span></span>
@@ -1062,7 +1130,7 @@ created by the certificate role.</p>
 <div class="sourceCode" id="cb7"><pre
 class="sourceCode yaml"><code class="sourceCode yaml"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="kw">-</span><span class="at"> </span><span class="fu">hosts</span><span class="kw">:</span><span class="at"> all</span></span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">vars</span><span class="kw">:</span></span>
-<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">mssql_accept_microsoft_odbc_driver_17_for_sql_server_eula</span><span class="kw">:</span><span class="at"> </span><span class="ch">true</span></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">mssql_accept_microsoft_odbc_driver_for_sql_server_eula</span><span class="kw">:</span><span class="at"> </span><span class="ch">true</span></span>
 <span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">mssql_accept_microsoft_cli_utilities_for_sql_server_eula</span><span class="kw">:</span><span class="at"> </span><span class="ch">true</span></span>
 <span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">mssql_accept_microsoft_sql_server_standard_eula</span><span class="kw">:</span><span class="at"> </span><span class="ch">true</span></span>
 <span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">mssql_version</span><span class="kw">:</span><span class="at"> </span><span class="dv">2019</span></span>
@@ -1206,6 +1274,34 @@ host.</p>
 host.</p>
 <p>Default: no default</p>
 <p>Type: <code>string</code></p>
+<h3
+id="mssql_ha_ag_secondary_role_allow_connections">mssql_ha_ag_secondary_role_allow_connections</h3>
+<p>A host variable that specifies the value of the
+<code>SECONDARY_ROLE(ALLOW_CONNECTIONS=&lt;&gt;)</code> setting for the
+replica.</p>
+<p>See <a href="#example-inventory-for-ha-configuration">Example
+Inventory for HA Configuration</a> for an example inventory.</p>
+<p>The available values are: <code>ALL</code>, <code>READ_ONLY</code>,
+<code>NO</code>.</p>
+<p>Default: <code>ALL</code></p>
+<p>Type: <code>string</code></p>
+<h3
+id="mssql_ha_ag_read_only_routing_list">mssql_ha_ag_read_only_routing_list</h3>
+<p>A host variable that specifies the values of
+<code>PRIMARY_ROLE(READ_ONLY_ROUTING_LIST=&lt;&gt;)</code> setting for
+the primary replica.</p>
+<p>You must enclose the value of this variable in parenthesis. It is
+required for Ansible to render it correctly.</p>
+<p>If you do not define this variable, the role does not set
+<code>PRIMARY_ROLE(READ_ONLY_ROUTING_LIST=&lt;&gt;)</code>.</p>
+<p>See <a
+href="https://learn.microsoft.com/en-us/sql/database-engine/availability-groups/windows/configure-read-only-routing-for-an-availability-group-sql-server?view=sql-server-ver16">Configure
+read-only routing for an Always On availability group</a> in Microsoft
+documentation.</p>
+<p>Example values: <code>('node-2','node-3')</code> or
+<code>(('node-2','node-3'),node-4)</code></p>
+<p>Default: <code>null</code></p>
+<p>Type: <code>string</code></p>
 <h3 id="mssql_ha_endpoint_port">mssql_ha_endpoint_port</h3>
 <p>The TCP port used to replicate data for an Always On availability
 group.</p>
@@ -1279,6 +1375,22 @@ class="sourceCode yaml"><code class="sourceCode yaml"><span id="cb8-1"><a href="
 <span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">name</span><span class="kw">:</span><span class="at"> microsoft.sql.server</span></span></code></pre></div>
 <p>Default: <code>[]</code></p>
 <p>Type: <code>list</code></p>
+<h3 id="mssql_ha_ag_is_contained">mssql_ha_ag_is_contained</h3>
+<p>Whether to configure the availability group provided with <a
+href="#mssql_ha_ag_name">mssql_ha_ag_name</a> as contained.</p>
+<p>This is supported since SQL Server version 2022.</p>
+<p>Default: <code>false</code></p>
+<p>Type: <code>bool</code></p>
+<h3 id="mssql_ha_ag_reuse_system_db">mssql_ha_ag_reuse_system_db</h3>
+<p>Only applicable when <a
+href="#mssql_ha_ag_is_contained">mssql_ha_ag_is_contained</a> is
+true.</p>
+<p>Whether to configure the availability group provided with <a
+href="#mssql_ha_ag_name">mssql_ha_ag_name</a> with the reuse_system_db
+setting.</p>
+<p>This is supported since SQL Server version 2022.</p>
+<p>Default: <code>false</code></p>
+<p>Type: <code>bool</code></p>
 <h2 id="configuring-pacemaker-variables">Configuring Pacemaker
 Variables</h2>
 <p>With these variables, you can specify whether to configure Pacemaker
@@ -1327,7 +1439,7 @@ replica to primary when needed.</p>
 <p>Whether to run the <code>fedora.linux_system_roles.ha_cluster</code>
 role from this role.</p>
 <p>Note that the <code>fedora.linux_system_roles.ha_cluster</code> role
-has the following limitation:</p>
+has the following limitations:</p>
 <ul>
 <li>This role replaces the configuration of HA Cluster on specified
 nodes. Any settings not specified in the role variables will be
@@ -1368,30 +1480,33 @@ class="sourceCode yaml"><code class="sourceCode yaml"><span id="cb9-1"><a href="
 <span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a><span class="co">    # There is no need to specify ha_cluster names explicitly</span></span>
 <span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">host1</span><span class="kw">:</span></span>
 <span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="fu">mssql_ha_replica_type</span><span class="kw">:</span><span class="at"> primary</span></span>
-<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a><span class="co">    # host2 and host3 is defined by FQDN</span></span>
-<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a><span class="co">    # You must define ha_cluster names to be in the short name format</span></span>
-<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">host2.example.com</span><span class="kw">:</span></span>
-<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="fu">mssql_ha_replica_type</span><span class="kw">:</span><span class="at"> synchronous</span></span>
-<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="fu">ha_cluster</span><span class="kw">:</span></span>
-<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a><span class="at">        </span><span class="fu">node_name</span><span class="kw">:</span><span class="at"> host2</span></span>
-<span id="cb9-13"><a href="#cb9-13" aria-hidden="true" tabindex="-1"></a><span class="at">        </span><span class="fu">pcs_address</span><span class="kw">:</span><span class="at"> host2</span></span>
-<span id="cb9-14"><a href="#cb9-14" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">host3.example.com</span><span class="kw">:</span></span>
-<span id="cb9-15"><a href="#cb9-15" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="fu">mssql_ha_replica_type</span><span class="kw">:</span><span class="at"> asynchronous</span></span>
-<span id="cb9-16"><a href="#cb9-16" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="fu">ha_cluster</span><span class="kw">:</span></span>
-<span id="cb9-17"><a href="#cb9-17" aria-hidden="true" tabindex="-1"></a><span class="at">        </span><span class="fu">node_name</span><span class="kw">:</span><span class="at"> host3</span></span>
-<span id="cb9-18"><a href="#cb9-18" aria-hidden="true" tabindex="-1"></a><span class="at">        </span><span class="fu">pcs_address</span><span class="kw">:</span><span class="at"> host3</span></span>
-<span id="cb9-19"><a href="#cb9-19" aria-hidden="true" tabindex="-1"></a><span class="co">    # host4 is defined by an ip address</span></span>
-<span id="cb9-20"><a href="#cb9-20" aria-hidden="true" tabindex="-1"></a><span class="co">    # You must define ha_cluster names to be in the short name format</span></span>
-<span id="cb9-21"><a href="#cb9-21" aria-hidden="true" tabindex="-1"></a><span class="co">    # In the case where the default host&#39;s IP address differs from the IP</span></span>
-<span id="cb9-22"><a href="#cb9-22" aria-hidden="true" tabindex="-1"></a><span class="co">    # address that Pacemaker must use to configure up cluster, you must define</span></span>
-<span id="cb9-23"><a href="#cb9-23" aria-hidden="true" tabindex="-1"></a><span class="co">    # ha_cluster corosync_addresses</span></span>
-<span id="cb9-24"><a href="#cb9-24" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">192.XXX.XXX.333</span><span class="kw">:</span></span>
-<span id="cb9-25"><a href="#cb9-25" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="fu">mssql_ha_replica_type</span><span class="kw">:</span><span class="at"> witness</span></span>
-<span id="cb9-26"><a href="#cb9-26" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="fu">ha_cluster</span><span class="kw">:</span></span>
-<span id="cb9-27"><a href="#cb9-27" aria-hidden="true" tabindex="-1"></a><span class="at">        </span><span class="fu">node_name</span><span class="kw">:</span><span class="at"> host4</span></span>
-<span id="cb9-28"><a href="#cb9-28" aria-hidden="true" tabindex="-1"></a><span class="at">        </span><span class="fu">pcs_address</span><span class="kw">:</span><span class="at"> host4</span></span>
-<span id="cb9-29"><a href="#cb9-29" aria-hidden="true" tabindex="-1"></a><span class="at">        </span><span class="fu">corosync_addresses</span><span class="kw">:</span></span>
-<span id="cb9-30"><a href="#cb9-30" aria-hidden="true" tabindex="-1"></a><span class="at">          </span><span class="kw">-</span><span class="at"> 10.XXX.XXX.333</span></span></code></pre></div>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="fu">mssql_ha_ag_secondary_role_allow_connections</span><span class="kw">:</span><span class="at"> ALL</span></span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="fu">mssql_ha_ag_read_only_routing_list</span><span class="kw">:</span><span class="at"> (&#39;host1&#39;)</span></span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a><span class="co">    # host2 and host3 is defined by FQDN</span></span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a><span class="co">    # You must define ha_cluster names to be in the short name format</span></span>
+<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">host2.example.com</span><span class="kw">:</span></span>
+<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="fu">mssql_ha_replica_type</span><span class="kw">:</span><span class="at"> synchronous</span></span>
+<span id="cb9-13"><a href="#cb9-13" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="fu">mssql_ha_ag_secondary_role_allow_connections</span><span class="kw">:</span><span class="at"> READ_ONLY</span></span>
+<span id="cb9-14"><a href="#cb9-14" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="fu">ha_cluster</span><span class="kw">:</span></span>
+<span id="cb9-15"><a href="#cb9-15" aria-hidden="true" tabindex="-1"></a><span class="at">        </span><span class="fu">node_name</span><span class="kw">:</span><span class="at"> host2</span></span>
+<span id="cb9-16"><a href="#cb9-16" aria-hidden="true" tabindex="-1"></a><span class="at">        </span><span class="fu">pcs_address</span><span class="kw">:</span><span class="at"> host2</span></span>
+<span id="cb9-17"><a href="#cb9-17" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">host3.example.com</span><span class="kw">:</span></span>
+<span id="cb9-18"><a href="#cb9-18" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="fu">mssql_ha_replica_type</span><span class="kw">:</span><span class="at"> asynchronous</span></span>
+<span id="cb9-19"><a href="#cb9-19" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="fu">ha_cluster</span><span class="kw">:</span></span>
+<span id="cb9-20"><a href="#cb9-20" aria-hidden="true" tabindex="-1"></a><span class="at">        </span><span class="fu">node_name</span><span class="kw">:</span><span class="at"> host3</span></span>
+<span id="cb9-21"><a href="#cb9-21" aria-hidden="true" tabindex="-1"></a><span class="at">        </span><span class="fu">pcs_address</span><span class="kw">:</span><span class="at"> host3</span></span>
+<span id="cb9-22"><a href="#cb9-22" aria-hidden="true" tabindex="-1"></a><span class="co">    # host4 is defined by an ip address</span></span>
+<span id="cb9-23"><a href="#cb9-23" aria-hidden="true" tabindex="-1"></a><span class="co">    # You must define ha_cluster names to be in the short name format</span></span>
+<span id="cb9-24"><a href="#cb9-24" aria-hidden="true" tabindex="-1"></a><span class="co">    # In the case where the default host&#39;s IP address differs from the IP</span></span>
+<span id="cb9-25"><a href="#cb9-25" aria-hidden="true" tabindex="-1"></a><span class="co">    # address that Pacemaker must use to configure up cluster, you must define</span></span>
+<span id="cb9-26"><a href="#cb9-26" aria-hidden="true" tabindex="-1"></a><span class="co">    # ha_cluster corosync_addresses</span></span>
+<span id="cb9-27"><a href="#cb9-27" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">192.XXX.XXX.333</span><span class="kw">:</span></span>
+<span id="cb9-28"><a href="#cb9-28" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="fu">mssql_ha_replica_type</span><span class="kw">:</span><span class="at"> witness</span></span>
+<span id="cb9-29"><a href="#cb9-29" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="fu">ha_cluster</span><span class="kw">:</span></span>
+<span id="cb9-30"><a href="#cb9-30" aria-hidden="true" tabindex="-1"></a><span class="at">        </span><span class="fu">node_name</span><span class="kw">:</span><span class="at"> host4</span></span>
+<span id="cb9-31"><a href="#cb9-31" aria-hidden="true" tabindex="-1"></a><span class="at">        </span><span class="fu">pcs_address</span><span class="kw">:</span><span class="at"> host4</span></span>
+<span id="cb9-32"><a href="#cb9-32" aria-hidden="true" tabindex="-1"></a><span class="at">        </span><span class="fu">corosync_addresses</span><span class="kw">:</span></span>
+<span id="cb9-33"><a href="#cb9-33" aria-hidden="true" tabindex="-1"></a><span class="at">          </span><span class="kw">-</span><span class="at"> 10.XXX.XXX.333</span></span></code></pre></div>
 <h3
 id="configuring-sql-server-with-a-none-cluster-type-for-read-scale-without-pacemaker">Configuring
 SQL Server with a <code>none</code> Cluster Type for Read-scale without
@@ -1415,7 +1530,7 @@ class="sourceCode yaml"><code class="sourceCode yaml"><span id="cb10-1"><a href=
 <div class="sourceCode" id="cb11"><pre
 class="sourceCode yaml"><code class="sourceCode yaml"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="kw">-</span><span class="at"> </span><span class="fu">hosts</span><span class="kw">:</span><span class="at"> all</span></span>
 <span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">vars</span><span class="kw">:</span></span>
-<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">mssql_accept_microsoft_odbc_driver_17_for_sql_server_eula</span><span class="kw">:</span><span class="at"> </span><span class="ch">true</span></span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">mssql_accept_microsoft_odbc_driver_for_sql_server_eula</span><span class="kw">:</span><span class="at"> </span><span class="ch">true</span></span>
 <span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">mssql_accept_microsoft_cli_utilities_for_sql_server_eula</span><span class="kw">:</span><span class="at"> </span><span class="ch">true</span></span>
 <span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">mssql_accept_microsoft_sql_server_standard_eula</span><span class="kw">:</span><span class="at"> </span><span class="ch">true</span></span>
 <span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">mssql_version</span><span class="kw">:</span><span class="at"> </span><span class="dv">2022</span></span>
@@ -1454,7 +1569,7 @@ role documentation.</p>
 <div class="sourceCode" id="cb12"><pre
 class="sourceCode yaml"><code class="sourceCode yaml"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="kw">-</span><span class="at"> </span><span class="fu">hosts</span><span class="kw">:</span><span class="at"> all</span></span>
 <span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">vars</span><span class="kw">:</span></span>
-<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">mssql_accept_microsoft_odbc_driver_17_for_sql_server_eula</span><span class="kw">:</span><span class="at"> </span><span class="ch">true</span></span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">mssql_accept_microsoft_odbc_driver_for_sql_server_eula</span><span class="kw">:</span><span class="at"> </span><span class="ch">true</span></span>
 <span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">mssql_accept_microsoft_cli_utilities_for_sql_server_eula</span><span class="kw">:</span><span class="at"> </span><span class="ch">true</span></span>
 <span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">mssql_accept_microsoft_sql_server_standard_eula</span><span class="kw">:</span><span class="at"> </span><span class="ch">true</span></span>
 <span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">mssql_version</span><span class="kw">:</span><span class="at"> </span><span class="dv">2019</span></span>
@@ -1553,7 +1668,7 @@ fencing agents, this example playbook configures the
 <div class="sourceCode" id="cb13"><pre
 class="sourceCode yaml"><code class="sourceCode yaml"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="kw">-</span><span class="at"> </span><span class="fu">hosts</span><span class="kw">:</span><span class="at"> all</span></span>
 <span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">vars</span><span class="kw">:</span></span>
-<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">mssql_accept_microsoft_odbc_driver_17_for_sql_server_eula</span><span class="kw">:</span><span class="at"> </span><span class="ch">true</span></span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">mssql_accept_microsoft_odbc_driver_for_sql_server_eula</span><span class="kw">:</span><span class="at"> </span><span class="ch">true</span></span>
 <span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">mssql_accept_microsoft_cli_utilities_for_sql_server_eula</span><span class="kw">:</span><span class="at"> </span><span class="ch">true</span></span>
 <span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">mssql_accept_microsoft_sql_server_standard_eula</span><span class="kw">:</span><span class="at"> </span><span class="ch">true</span></span>
 <span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">mssql_version</span><span class="kw">:</span><span class="at"> </span><span class="dv">2019</span></span>
@@ -1679,7 +1794,7 @@ this role to open the probe port configured in Azure.</p>
 <div class="sourceCode" id="cb14"><pre
 class="sourceCode yaml"><code class="sourceCode yaml"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="kw">-</span><span class="at"> </span><span class="fu">hosts</span><span class="kw">:</span><span class="at"> all</span></span>
 <span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">vars</span><span class="kw">:</span></span>
-<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">mssql_accept_microsoft_odbc_driver_17_for_sql_server_eula</span><span class="kw">:</span><span class="at"> </span><span class="ch">true</span></span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">mssql_accept_microsoft_odbc_driver_for_sql_server_eula</span><span class="kw">:</span><span class="at"> </span><span class="ch">true</span></span>
 <span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">mssql_accept_microsoft_cli_utilities_for_sql_server_eula</span><span class="kw">:</span><span class="at"> </span><span class="ch">true</span></span>
 <span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">mssql_accept_microsoft_sql_server_standard_eula</span><span class="kw">:</span><span class="at"> </span><span class="ch">true</span></span>
 <span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">mssql_version</span><span class="kw">:</span><span class="at"> </span><span class="dv">2019</span></span>
@@ -1808,21 +1923,27 @@ SQL Server to authenticate with Active Directory (AD) Server</h1>
 <p>Optional: Use variables starting with the <code>mssql_ad_</code>
 prefix to configure SQL Server to authenticate with Microsoft AD
 Server.</p>
+<p>Note that creating users in Active Directory is not idempotent - it
+always return changed status. This is because the <code>adutil</code>
+tool is not able to return statuses of users, hence the role must
+force-configure users.</p>
 <h2 id="ad-considerations">AD Considerations</h2>
 <p>This role uses the
 <code>fedora.linux_system_roles.ad_integration</code> role to join SQL
 Server with AD server.</p>
-<p>To join to AD server, you must also provide the following variables
-for the <code>ad_integration</code> role:</p>
 <ul>
-<li><p><code>ad_integration_realm</code> - to optionally join to the AD
-and create a keytab file</p></li>
-<li><p><code>ad_integration_user</code> - to optionally join to the AD
-and obtain Kerberos ticket if <a
+<li><p>To join to AD server, you must also provide the following
+variables for the <code>ad_integration</code> role:</p>
+<ul>
+<li><code>ad_integration_realm</code> - to optionally join to the AD and
+create a keytab file</li>
+<li><code>ad_integration_user</code> - to optionally join to the AD and
+obtain Kerberos ticket if <a
 href="#mssql_ad_kerberos_user">mssql_ad_kerberos_user</a> is not
-provided</p></li>
-<li><p><code>ad_integration_password</code> - to authenticate
-<code>ad_integration_user</code></p></li>
+provided</li>
+<li><code>ad_integration_password</code> - to authenticate
+<code>ad_integration_user</code></li>
+</ul></li>
 <li><p>Optional, You can configure DNS using ad_integration role by
 providing the following variables:</p>
 <div class="sourceCode" id="cb15"><pre
@@ -1833,10 +1954,16 @@ class="sourceCode yaml"><code class="sourceCode yaml"><span id="cb15-1"><a href=
 <li><p>Optional: You can provide further variables for the
 <code>fedora.linux_system_roles.ad_integration</code> role if you
 need.</p></li>
+<li><p>Optional: If you have already joined managed nodes to AD and you
+want to skip running the ad_integration role, you can set the <a
+href="#mssql_ad_join">mssql_ad_join</a> variable to false.</p></li>
+<li><p>To avoid the issue with canonicalization of Kerberos principal
+returned by the KDC described in <a
+href="https://access.redhat.com/solutions/7134391">Executing privileged
+commands against MS ADS fails with error 15404</a> KCS, the role sets
+<code>krb5_canonicalize=false</code> when joining to the AD
+realm.</p></li>
 </ul>
-<p>Optional: If you have already joined managed nodes to AD and you want
-to skip running the ad_integration role, you can set the <a
-href="#mssql_ad_join">mssql_ad_join</a> variable to false.</p>
 <h2 id="ad-prerequisites">AD Prerequisites</h2>
 <p>Ensure that your AD Server and Linux host meet the prerequisites for
 joining. For more information, see <a
@@ -1847,29 +1974,8 @@ Active Directory authentication for SQL Server on Linux and
 containers</a> in Microsoft documentation.</p>
 <h2 id="finishing-ad-server-configuration">Finishing AD Server
 Configuration</h2>
-<ol type="1">
-<li><p>After you execute the role to configure AD Server authentication,
-you must complete one of the following procedures to add AES128 and
-AES256 kerberos encryption types to the <a
-href="#mssql_ad_sql_user">mssql_ad_sql_user</a> on AD Server.</p>
 <ul>
-<li><p>For the RSAT UI users, complete the following steps:</p>
-<ol type="1">
-<li>Launch <strong>Active Directory Users and Computers</strong></li>
-<li>Navigate to the SQL User (Default: <em><strong>domain</strong></em>
-&gt; <strong>Users</strong> &gt; <em><strong>sqluser</strong></em>)</li>
-<li>Right click the SQL User account and select
-<strong>Properties</strong></li>
-<li>In the <strong>Account</strong> tab, select <strong>This account
-supports Kerberos AES 128 bit encryption</strong> and <strong>This
-account supports Kerberos AES 256 bit encryption</strong></li>
-<li>Click <strong>Apply</strong></li>
-</ol></li>
-<li><p>For the PowerShell users, enter the following command:</p>
-<div class="sourceCode" id="cb16"><pre
-class="sourceCode powershell"><code class="sourceCode powershell"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="fu">Set-ADUser</span> <span class="op">-</span>Identity <span class="op">&lt;</span>sqluser<span class="op">&gt;</span> <span class="op">-</span>KerberosEncryptionType AES128<span class="op">,</span>AES256</span></code></pre></div></li>
-</ul></li>
-<li><p>You must create Active Directory-based logins in Transact-SQL as
+<li>You must create Active Directory-based logins in Transact-SQL as
 described in <a
 href="https://learn.microsoft.com/en-us/sql/linux/sql-server-linux-ad-auth-adutil-tutorial?view=sql-server-ver16#create-active-directory-based-sql-server-logins-in-transact-sql">Create
 Active Directory-based SQL Server logins in Transact-SQL</a> in
@@ -1878,8 +1984,8 @@ with SQL Server on Linux</em> in Microsoft documentation. You can write
 a T-SQL script and input it as described in <a
 href="#inputting-sql-scripts-to-sql-server">mssql_post_input_sql_file</a>.
 See example playbooks for how to create logins using the
-<code>mssql_post_input_sql_content</code> variable.</p></li>
-</ol>
+<code>mssql_post_input_sql_content</code> variable.</li>
+</ul>
 <h2 id="verifying-authentication">Verifying Authentication</h2>
 <p>After you execute the role to configure AD Server authentication and
 complete <a href="#finishing-ad-server-configuration">Finishing AD
@@ -1890,15 +1996,15 @@ account.</p>
 <ol type="1">
 <li><p>SSH into the <code>*&lt;sqluser&gt;@&lt;domain.com&gt;*</code>
 user on your Linux <em>client.domain.com</em> machine:</p>
-<div class="sourceCode" id="cb17"><pre
-class="sourceCode bash"><code class="sourceCode bash"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ssh</span> <span class="at">-l</span> <span class="op">&lt;</span>sqluser<span class="op">&gt;</span>@<span class="op">&lt;</span>domain.com<span class="op">&gt;</span> <span class="op">&lt;</span>client.domain.com<span class="op">&gt;</span></span></code></pre></div></li>
+<div class="sourceCode" id="cb16"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ssh</span> <span class="at">-l</span> <span class="op">&lt;</span>sqluser<span class="op">&gt;</span>@<span class="op">&lt;</span>domain.com<span class="op">&gt;</span> <span class="op">&lt;</span>client.domain.com<span class="op">&gt;</span></span></code></pre></div></li>
 <li><p>Obtain Kerberos ticket for the Administrator user:</p>
-<div class="sourceCode" id="cb18"><pre
-class="sourceCode bash"><code class="sourceCode bash"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="ex">kinit</span> Administrator@<span class="op">&lt;</span>DOMAIN.COM<span class="op">&gt;</span></span></code></pre></div></li>
+<div class="sourceCode" id="cb17"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="ex">kinit</span> Administrator@<span class="op">&lt;</span>DOMAIN.COM<span class="op">&gt;</span></span></code></pre></div></li>
 <li><p>Use <code>sqlcmd</code> to log in to SQL Server and, for example,
 run the query to get current user:</p>
-<div class="sourceCode" id="cb19"><pre
-class="sourceCode bash"><code class="sourceCode bash"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="ex">/opt/mssql-tools/bin/sqlcmd</span> <span class="at">-S.</span> <span class="at">-Q</span> <span class="st">&#39;SELECT SYSTEM_USER&#39;</span></span></code></pre></div></li>
+<div class="sourceCode" id="cb18"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="ex">/opt/mssql-tools/bin/sqlcmd</span> <span class="at">-S.</span> <span class="at">-Q</span> <span class="st">&#39;SELECT SYSTEM_USER&#39;</span></span></code></pre></div></li>
 </ol>
 <h2 id="ad-variables">AD Variables</h2>
 <h3 id="mssql_ad_configure">mssql_ad_configure</h3>
@@ -1941,19 +2047,19 @@ variable, the role obtains the kerberos ticket for
 <code>mssql_ad_sql_password</code> password.</p></li>
 </ol>
 <p>Default:</p>
-<div class="sourceCode" id="cb20"><pre
-class="sourceCode yaml"><code class="sourceCode yaml"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mssql_ad_kerberos_user</span><span class="kw">: </span><span class="ch">&gt;-</span></span>
-<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>  {{ ad_integration_user if ad_integration_user is defined</span>
-<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a>  else mssql_ad_sql_user }}</span></code></pre></div>
+<div class="sourceCode" id="cb19"><pre
+class="sourceCode yaml"><code class="sourceCode yaml"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mssql_ad_kerberos_user</span><span class="kw">: </span><span class="ch">&gt;-</span></span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>  {{ ad_integration_user if ad_integration_user is defined</span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>  else mssql_ad_sql_user }}</span></code></pre></div>
 <p>Type: <code>string</code></p>
 <h3 id="mssql_ad_kerberos_password">mssql_ad_kerberos_password</h3>
 <p>Optional, the password to use for obtaining kerberos ticket for the
 <code>mssql_ad_kerberos_user</code> user.</p>
 <p>Default:</p>
-<div class="sourceCode" id="cb21"><pre
-class="sourceCode yaml"><code class="sourceCode yaml"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mssql_ad_kerberos_password</span><span class="kw">: </span><span class="ch">&gt;-</span></span>
-<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>  {{ ad_integration_password if ad_integration_user is defined</span>
-<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a>  else mssql_ad_sql_password }}</span></code></pre></div>
+<div class="sourceCode" id="cb20"><pre
+class="sourceCode yaml"><code class="sourceCode yaml"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mssql_ad_kerberos_password</span><span class="kw">: </span><span class="ch">&gt;-</span></span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>  {{ ad_integration_password if ad_integration_user is defined</span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a>  else mssql_ad_sql_password }}</span></code></pre></div>
 <p>Type: <code>string</code></p>
 <h3 id="mssql_ad_keytab_file">mssql_ad_keytab_file</h3>
 <p>Optional: You can use this variable if you don't want the role to
@@ -1982,7 +2088,10 @@ be transferred or already is present remotely.</p>
 <p>Default: <code>false</code></p>
 <p>Type: <code>bool</code></p>
 <h3 id="mssql_ad_sql_user">mssql_ad_sql_user</h3>
-<p>User to be created in SQL Server and used for authentication.</p>
+<p>User to be created in SQL Server and used for authentication. The
+role configures this user with
+<code>Kerberos AES 128 bit encryption</code> and
+<code>Kerberos AES 256 bit encryption</code> enabled.</p>
 <p>Default: <code>null</code></p>
 <p>Type: <code>string</code></p>
 <h3 id="mssql_ad_sql_password">mssql_ad_sql_password</h3>
@@ -2012,22 +2121,63 @@ users by default</li>
 </ol>
 <p>For example: <code>CN=sqluser,CN=Users,DC=DOMAIN,DC=COM</code>.</p>
 <p>Default:</p>
-<div class="sourceCode" id="cb22"><pre
-class="sourceCode yaml"><code class="sourceCode yaml"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mssql_ad_sql_user_dn</span><span class="kw">: </span><span class="ch">&gt;-</span></span>
-<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>  CN={{ mssql_ad_sql_user }},</span>
-<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a>  CN=Users,</span>
-<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a>  {{ ad_integration_realm.split(&quot;.&quot;)</span>
-<span id="cb22-5"><a href="#cb22-5" aria-hidden="true" tabindex="-1"></a>  | map(&quot;regex_replace&quot;,&quot;^&quot;,&quot;DC=&quot;)</span>
-<span id="cb22-6"><a href="#cb22-6" aria-hidden="true" tabindex="-1"></a>  | join(&quot;,&quot;) }}</span></code></pre></div>
+<div class="sourceCode" id="cb21"><pre
+class="sourceCode yaml"><code class="sourceCode yaml"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mssql_ad_sql_user_dn</span><span class="kw">: </span><span class="ch">&gt;-</span></span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>  CN={{ mssql_ad_sql_user }},</span>
+<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a>  CN=Users,</span>
+<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a>  {{ ad_integration_realm.split(&quot;.&quot;)</span>
+<span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a>  | map(&quot;regex_replace&quot;,&quot;^&quot;,&quot;DC=&quot;)</span>
+<span id="cb21-6"><a href="#cb21-6" aria-hidden="true" tabindex="-1"></a>  | join(&quot;,&quot;) }}</span></code></pre></div>
 <p>Type: <code>string</code></p>
 <h2 id="ad-example-playbooks">AD Example Playbooks</h2>
 <h3 id="configuring-ad-integration-with-general-parameters">Configuring
 AD integration with general parameters</h3>
+<div class="sourceCode" id="cb22"><pre
+class="sourceCode yaml"><code class="sourceCode yaml"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="kw">-</span><span class="at"> </span><span class="fu">name</span><span class="kw">:</span><span class="at"> Configure with AD server authentication</span></span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">hosts</span><span class="kw">:</span><span class="at"> all</span></span>
+<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">vars</span><span class="kw">:</span></span>
+<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">mssql_accept_microsoft_odbc_driver_for_sql_server_eula</span><span class="kw">:</span><span class="at"> </span><span class="ch">true</span></span>
+<span id="cb22-5"><a href="#cb22-5" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">mssql_accept_microsoft_cli_utilities_for_sql_server_eula</span><span class="kw">:</span><span class="at"> </span><span class="ch">true</span></span>
+<span id="cb22-6"><a href="#cb22-6" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">mssql_accept_microsoft_sql_server_standard_eula</span><span class="kw">:</span><span class="at"> </span><span class="ch">true</span></span>
+<span id="cb22-7"><a href="#cb22-7" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">mssql_version</span><span class="kw">:</span><span class="at"> </span><span class="dv">2022</span></span>
+<span id="cb22-8"><a href="#cb22-8" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">mssql_password</span><span class="kw">:</span><span class="at"> </span><span class="st">&quot;p@55w0rD&quot;</span></span>
+<span id="cb22-9"><a href="#cb22-9" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">mssql_edition</span><span class="kw">:</span><span class="at"> Evaluation</span></span>
+<span id="cb22-10"><a href="#cb22-10" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">mssql_manage_firewall</span><span class="kw">:</span><span class="at"> </span><span class="ch">true</span></span>
+<span id="cb22-11"><a href="#cb22-11" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">mssql_ad_configure</span><span class="kw">:</span><span class="at"> </span><span class="ch">true</span></span>
+<span id="cb22-12"><a href="#cb22-12" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">mssql_ad_sql_user</span><span class="kw">:</span><span class="at"> sqluser</span></span>
+<span id="cb22-13"><a href="#cb22-13" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">mssql_ad_sql_password</span><span class="kw">:</span><span class="at"> </span><span class="st">&quot;p@55w0rD1&quot;</span></span>
+<span id="cb22-14"><a href="#cb22-14" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">ad_integration_realm</span><span class="kw">:</span><span class="at"> domain.com</span></span>
+<span id="cb22-15"><a href="#cb22-15" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">ad_integration_user</span><span class="kw">:</span><span class="at"> Administrator</span></span>
+<span id="cb22-16"><a href="#cb22-16" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">ad_integration_password</span><span class="kw">:</span><span class="at"> Secret123</span></span>
+<span id="cb22-17"><a href="#cb22-17" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">ad_integration_manage_dns</span><span class="kw">:</span><span class="at"> </span><span class="ch">true</span></span>
+<span id="cb22-18"><a href="#cb22-18" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">ad_integration_dns_server</span><span class="kw">:</span><span class="at"> </span><span class="fl">1.1.1.1</span></span>
+<span id="cb22-19"><a href="#cb22-19" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">ad_integration_dns_connection_name</span><span class="kw">:</span><span class="at"> eth0</span></span>
+<span id="cb22-20"><a href="#cb22-20" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">ad_integration_dns_connection_type</span><span class="kw">:</span><span class="at"> ethernet</span></span>
+<span id="cb22-21"><a href="#cb22-21" aria-hidden="true" tabindex="-1"></a><span class="fu">    mssql_post_input_sql_content</span><span class="kw">: </span><span class="ch">|-</span></span>
+<span id="cb22-22"><a href="#cb22-22" aria-hidden="true" tabindex="-1"></a>      USE master;</span>
+<span id="cb22-23"><a href="#cb22-23" aria-hidden="true" tabindex="-1"></a>      IF NOT EXISTS (</span>
+<span id="cb22-24"><a href="#cb22-24" aria-hidden="true" tabindex="-1"></a>        SELECT name FROM sys.server_principals</span>
+<span id="cb22-25"><a href="#cb22-25" aria-hidden="true" tabindex="-1"></a>        WHERE name = &#39;&lt;mydomain&gt;\&lt;myADlogin&gt;&#39;</span>
+<span id="cb22-26"><a href="#cb22-26" aria-hidden="true" tabindex="-1"></a>      )</span>
+<span id="cb22-27"><a href="#cb22-27" aria-hidden="true" tabindex="-1"></a>      BEGIN</span>
+<span id="cb22-28"><a href="#cb22-28" aria-hidden="true" tabindex="-1"></a>        PRINT &#39;A &lt;mydomain&gt;\&lt;myADlogin&gt; login does not exist, creating&#39;;</span>
+<span id="cb22-29"><a href="#cb22-29" aria-hidden="true" tabindex="-1"></a>        CREATE LOGIN [&lt;mydomain&gt;\&lt;myADlogin&gt;] FROM WINDOWS;</span>
+<span id="cb22-30"><a href="#cb22-30" aria-hidden="true" tabindex="-1"></a>        PRINT &#39;The &lt;mydomain&gt;\&lt;myADlogin&gt; login created successfully&#39;;</span>
+<span id="cb22-31"><a href="#cb22-31" aria-hidden="true" tabindex="-1"></a>      END</span>
+<span id="cb22-32"><a href="#cb22-32" aria-hidden="true" tabindex="-1"></a>      ELSE</span>
+<span id="cb22-33"><a href="#cb22-33" aria-hidden="true" tabindex="-1"></a>      BEGIN</span>
+<span id="cb22-34"><a href="#cb22-34" aria-hidden="true" tabindex="-1"></a>        PRINT &#39;A &lt;mydomain&gt;\&lt;myADlogin&gt; login already exists, skipping&#39;</span>
+<span id="cb22-35"><a href="#cb22-35" aria-hidden="true" tabindex="-1"></a>      END</span></code></pre></div>
+<h3
+id="configuring-ad-integration-with-a-pre-created-keytab-file">Configuring
+AD integration with a pre-created keytab file</h3>
+<p>If you received a pre-created keytab file and want the role to use
+it, set variables like in this example:</p>
 <div class="sourceCode" id="cb23"><pre
-class="sourceCode yaml"><code class="sourceCode yaml"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="kw">-</span><span class="at"> </span><span class="fu">name</span><span class="kw">:</span><span class="at"> Configure with AD server authentication</span></span>
+class="sourceCode yaml"><code class="sourceCode yaml"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="kw">-</span><span class="at"> </span><span class="fu">name</span><span class="kw">:</span><span class="at"> Configure with AD server authentication with a pre-created keytab file</span></span>
 <span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">hosts</span><span class="kw">:</span><span class="at"> all</span></span>
 <span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">vars</span><span class="kw">:</span></span>
-<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">mssql_accept_microsoft_odbc_driver_17_for_sql_server_eula</span><span class="kw">:</span><span class="at"> </span><span class="ch">true</span></span>
+<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">mssql_accept_microsoft_odbc_driver_for_sql_server_eula</span><span class="kw">:</span><span class="at"> </span><span class="ch">true</span></span>
 <span id="cb23-5"><a href="#cb23-5" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">mssql_accept_microsoft_cli_utilities_for_sql_server_eula</span><span class="kw">:</span><span class="at"> </span><span class="ch">true</span></span>
 <span id="cb23-6"><a href="#cb23-6" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">mssql_accept_microsoft_sql_server_standard_eula</span><span class="kw">:</span><span class="at"> </span><span class="ch">true</span></span>
 <span id="cb23-7"><a href="#cb23-7" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">mssql_version</span><span class="kw">:</span><span class="at"> </span><span class="dv">2022</span></span>
@@ -2035,11 +2185,11 @@ class="sourceCode yaml"><code class="sourceCode yaml"><span id="cb23-1"><a href=
 <span id="cb23-9"><a href="#cb23-9" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">mssql_edition</span><span class="kw">:</span><span class="at"> Evaluation</span></span>
 <span id="cb23-10"><a href="#cb23-10" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">mssql_manage_firewall</span><span class="kw">:</span><span class="at"> </span><span class="ch">true</span></span>
 <span id="cb23-11"><a href="#cb23-11" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">mssql_ad_configure</span><span class="kw">:</span><span class="at"> </span><span class="ch">true</span></span>
-<span id="cb23-12"><a href="#cb23-12" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">mssql_ad_sql_user</span><span class="kw">:</span><span class="at"> sqluser</span></span>
-<span id="cb23-13"><a href="#cb23-13" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">mssql_ad_sql_password</span><span class="kw">:</span><span class="at"> </span><span class="st">&quot;p@55w0rD1&quot;</span></span>
-<span id="cb23-14"><a href="#cb23-14" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">ad_integration_realm</span><span class="kw">:</span><span class="at"> domain.com</span></span>
-<span id="cb23-15"><a href="#cb23-15" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">ad_integration_user</span><span class="kw">:</span><span class="at"> Administrator</span></span>
-<span id="cb23-16"><a href="#cb23-16" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">ad_integration_password</span><span class="kw">:</span><span class="at"> Secret123</span></span>
+<span id="cb23-12"><a href="#cb23-12" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">mssql_ad_keytab_file</span><span class="kw">:</span><span class="at"> /path/to/file</span></span>
+<span id="cb23-13"><a href="#cb23-13" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">mssql_ad_keytab_remote_src</span><span class="kw">:</span><span class="at"> </span><span class="ch">false</span></span>
+<span id="cb23-14"><a href="#cb23-14" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">mssql_ad_sql_user</span><span class="kw">:</span><span class="at"> sqluser</span></span>
+<span id="cb23-15"><a href="#cb23-15" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">ad_integration_realm</span><span class="kw">:</span><span class="at"> domain.com</span></span>
+<span id="cb23-16"><a href="#cb23-16" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">ad_integration_user</span><span class="kw">:</span><span class="at"> Administrator</span></span>
 <span id="cb23-17"><a href="#cb23-17" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">ad_integration_manage_dns</span><span class="kw">:</span><span class="at"> </span><span class="ch">true</span></span>
 <span id="cb23-18"><a href="#cb23-18" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">ad_integration_dns_server</span><span class="kw">:</span><span class="at"> </span><span class="fl">1.1.1.1</span></span>
 <span id="cb23-19"><a href="#cb23-19" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">ad_integration_dns_connection_name</span><span class="kw">:</span><span class="at"> eth0</span></span>
@@ -2059,16 +2209,15 @@ class="sourceCode yaml"><code class="sourceCode yaml"><span id="cb23-1"><a href=
 <span id="cb23-33"><a href="#cb23-33" aria-hidden="true" tabindex="-1"></a>      BEGIN</span>
 <span id="cb23-34"><a href="#cb23-34" aria-hidden="true" tabindex="-1"></a>        PRINT &#39;A &lt;mydomain&gt;\&lt;myADlogin&gt; login already exists, skipping&#39;</span>
 <span id="cb23-35"><a href="#cb23-35" aria-hidden="true" tabindex="-1"></a>      END</span></code></pre></div>
-<h3
-id="configuring-ad-integration-with-a-pre-created-keytab-file">Configuring
-AD integration with a pre-created keytab file</h3>
-<p>If you received a pre-created keytab file and want the role to use
-it, set variables like in this example:</p>
+<h3 id="configuring-ad-integration-without-joining-to-ad">Configuring AD
+integration without joining to AD</h3>
+<p>You must join managed host to AD Server yourself prior to running
+this playbook.</p>
 <div class="sourceCode" id="cb24"><pre
-class="sourceCode yaml"><code class="sourceCode yaml"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="kw">-</span><span class="at"> </span><span class="fu">name</span><span class="kw">:</span><span class="at"> Configure with AD server authentication with a pre-created keytab file</span></span>
+class="sourceCode yaml"><code class="sourceCode yaml"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="kw">-</span><span class="at"> </span><span class="fu">name</span><span class="kw">:</span><span class="at"> Configure with AD server authentication without joining to AD</span></span>
 <span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">hosts</span><span class="kw">:</span><span class="at"> all</span></span>
 <span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">vars</span><span class="kw">:</span></span>
-<span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">mssql_accept_microsoft_odbc_driver_17_for_sql_server_eula</span><span class="kw">:</span><span class="at"> </span><span class="ch">true</span></span>
+<span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">mssql_accept_microsoft_odbc_driver_for_sql_server_eula</span><span class="kw">:</span><span class="at"> </span><span class="ch">true</span></span>
 <span id="cb24-5"><a href="#cb24-5" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">mssql_accept_microsoft_cli_utilities_for_sql_server_eula</span><span class="kw">:</span><span class="at"> </span><span class="ch">true</span></span>
 <span id="cb24-6"><a href="#cb24-6" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">mssql_accept_microsoft_sql_server_standard_eula</span><span class="kw">:</span><span class="at"> </span><span class="ch">true</span></span>
 <span id="cb24-7"><a href="#cb24-7" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">mssql_version</span><span class="kw">:</span><span class="at"> </span><span class="dv">2022</span></span>
@@ -2076,66 +2225,26 @@ class="sourceCode yaml"><code class="sourceCode yaml"><span id="cb24-1"><a href=
 <span id="cb24-9"><a href="#cb24-9" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">mssql_edition</span><span class="kw">:</span><span class="at"> Evaluation</span></span>
 <span id="cb24-10"><a href="#cb24-10" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">mssql_manage_firewall</span><span class="kw">:</span><span class="at"> </span><span class="ch">true</span></span>
 <span id="cb24-11"><a href="#cb24-11" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">mssql_ad_configure</span><span class="kw">:</span><span class="at"> </span><span class="ch">true</span></span>
-<span id="cb24-12"><a href="#cb24-12" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">mssql_ad_keytab_file</span><span class="kw">:</span><span class="at"> /path/to/file</span></span>
-<span id="cb24-13"><a href="#cb24-13" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">mssql_ad_keytab_remote_src</span><span class="kw">:</span><span class="at"> </span><span class="ch">false</span></span>
-<span id="cb24-14"><a href="#cb24-14" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">mssql_ad_sql_user</span><span class="kw">:</span><span class="at"> sqluser</span></span>
-<span id="cb24-15"><a href="#cb24-15" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">ad_integration_realm</span><span class="kw">:</span><span class="at"> domain.com</span></span>
-<span id="cb24-16"><a href="#cb24-16" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">ad_integration_user</span><span class="kw">:</span><span class="at"> Administrator</span></span>
-<span id="cb24-17"><a href="#cb24-17" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">ad_integration_manage_dns</span><span class="kw">:</span><span class="at"> </span><span class="ch">true</span></span>
-<span id="cb24-18"><a href="#cb24-18" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">ad_integration_dns_server</span><span class="kw">:</span><span class="at"> </span><span class="fl">1.1.1.1</span></span>
-<span id="cb24-19"><a href="#cb24-19" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">ad_integration_dns_connection_name</span><span class="kw">:</span><span class="at"> eth0</span></span>
-<span id="cb24-20"><a href="#cb24-20" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">ad_integration_dns_connection_type</span><span class="kw">:</span><span class="at"> ethernet</span></span>
-<span id="cb24-21"><a href="#cb24-21" aria-hidden="true" tabindex="-1"></a><span class="fu">    mssql_post_input_sql_content</span><span class="kw">: </span><span class="ch">|-</span></span>
-<span id="cb24-22"><a href="#cb24-22" aria-hidden="true" tabindex="-1"></a>      USE master;</span>
-<span id="cb24-23"><a href="#cb24-23" aria-hidden="true" tabindex="-1"></a>      IF NOT EXISTS (</span>
-<span id="cb24-24"><a href="#cb24-24" aria-hidden="true" tabindex="-1"></a>        SELECT name FROM sys.server_principals</span>
-<span id="cb24-25"><a href="#cb24-25" aria-hidden="true" tabindex="-1"></a>        WHERE name = &#39;&lt;mydomain&gt;\&lt;myADlogin&gt;&#39;</span>
-<span id="cb24-26"><a href="#cb24-26" aria-hidden="true" tabindex="-1"></a>      )</span>
-<span id="cb24-27"><a href="#cb24-27" aria-hidden="true" tabindex="-1"></a>      BEGIN</span>
-<span id="cb24-28"><a href="#cb24-28" aria-hidden="true" tabindex="-1"></a>        PRINT &#39;A &lt;mydomain&gt;\&lt;myADlogin&gt; login does not exist, creating&#39;;</span>
-<span id="cb24-29"><a href="#cb24-29" aria-hidden="true" tabindex="-1"></a>        CREATE LOGIN [&lt;mydomain&gt;\&lt;myADlogin&gt;] FROM WINDOWS;</span>
-<span id="cb24-30"><a href="#cb24-30" aria-hidden="true" tabindex="-1"></a>        PRINT &#39;The &lt;mydomain&gt;\&lt;myADlogin&gt; login created successfully&#39;;</span>
-<span id="cb24-31"><a href="#cb24-31" aria-hidden="true" tabindex="-1"></a>      END</span>
-<span id="cb24-32"><a href="#cb24-32" aria-hidden="true" tabindex="-1"></a>      ELSE</span>
-<span id="cb24-33"><a href="#cb24-33" aria-hidden="true" tabindex="-1"></a>      BEGIN</span>
-<span id="cb24-34"><a href="#cb24-34" aria-hidden="true" tabindex="-1"></a>        PRINT &#39;A &lt;mydomain&gt;\&lt;myADlogin&gt; login already exists, skipping&#39;</span>
-<span id="cb24-35"><a href="#cb24-35" aria-hidden="true" tabindex="-1"></a>      END</span></code></pre></div>
-<h3 id="configuring-ad-integration-without-joining-to-ad">Configuring AD
-integration without joining to AD</h3>
-<p>You must join managed host to AD Server yourself prior to running
-this playbook.</p>
-<div class="sourceCode" id="cb25"><pre
-class="sourceCode yaml"><code class="sourceCode yaml"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="kw">-</span><span class="at"> </span><span class="fu">name</span><span class="kw">:</span><span class="at"> Configure with AD server authentication without joining to AD</span></span>
-<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">hosts</span><span class="kw">:</span><span class="at"> all</span></span>
-<span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">vars</span><span class="kw">:</span></span>
-<span id="cb25-4"><a href="#cb25-4" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">mssql_accept_microsoft_odbc_driver_17_for_sql_server_eula</span><span class="kw">:</span><span class="at"> </span><span class="ch">true</span></span>
-<span id="cb25-5"><a href="#cb25-5" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">mssql_accept_microsoft_cli_utilities_for_sql_server_eula</span><span class="kw">:</span><span class="at"> </span><span class="ch">true</span></span>
-<span id="cb25-6"><a href="#cb25-6" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">mssql_accept_microsoft_sql_server_standard_eula</span><span class="kw">:</span><span class="at"> </span><span class="ch">true</span></span>
-<span id="cb25-7"><a href="#cb25-7" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">mssql_version</span><span class="kw">:</span><span class="at"> </span><span class="dv">2022</span></span>
-<span id="cb25-8"><a href="#cb25-8" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">mssql_password</span><span class="kw">:</span><span class="at"> </span><span class="st">&quot;p@55w0rD&quot;</span></span>
-<span id="cb25-9"><a href="#cb25-9" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">mssql_edition</span><span class="kw">:</span><span class="at"> Evaluation</span></span>
-<span id="cb25-10"><a href="#cb25-10" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">mssql_manage_firewall</span><span class="kw">:</span><span class="at"> </span><span class="ch">true</span></span>
-<span id="cb25-11"><a href="#cb25-11" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">mssql_ad_configure</span><span class="kw">:</span><span class="at"> </span><span class="ch">true</span></span>
-<span id="cb25-12"><a href="#cb25-12" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">mssql_ad_join</span><span class="kw">:</span><span class="at"> </span><span class="ch">false</span></span>
-<span id="cb25-13"><a href="#cb25-13" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">mssql_ad_sql_user</span><span class="kw">:</span><span class="at"> sqluser</span></span>
-<span id="cb25-14"><a href="#cb25-14" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">mssql_ad_kerberos_user</span><span class="kw">:</span><span class="at"> user_administrator</span></span>
-<span id="cb25-15"><a href="#cb25-15" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">mssql_ad_kerberos_password</span><span class="kw">:</span><span class="at"> Secret123</span></span>
-<span id="cb25-16"><a href="#cb25-16" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">ad_integration_realm</span><span class="kw">:</span><span class="at"> domain.com</span></span>
-<span id="cb25-17"><a href="#cb25-17" aria-hidden="true" tabindex="-1"></a><span class="fu">    mssql_post_input_sql_content</span><span class="kw">: </span><span class="ch">|-</span></span>
-<span id="cb25-18"><a href="#cb25-18" aria-hidden="true" tabindex="-1"></a>      USE master;</span>
-<span id="cb25-19"><a href="#cb25-19" aria-hidden="true" tabindex="-1"></a>      IF NOT EXISTS (</span>
-<span id="cb25-20"><a href="#cb25-20" aria-hidden="true" tabindex="-1"></a>        SELECT name FROM sys.server_principals</span>
-<span id="cb25-21"><a href="#cb25-21" aria-hidden="true" tabindex="-1"></a>        WHERE name = &#39;&lt;mydomain&gt;\&lt;myADlogin&gt;&#39;</span>
-<span id="cb25-22"><a href="#cb25-22" aria-hidden="true" tabindex="-1"></a>      )</span>
-<span id="cb25-23"><a href="#cb25-23" aria-hidden="true" tabindex="-1"></a>      BEGIN</span>
-<span id="cb25-24"><a href="#cb25-24" aria-hidden="true" tabindex="-1"></a>        PRINT &#39;A &lt;mydomain&gt;\&lt;myADlogin&gt; login does not exist, creating&#39;;</span>
-<span id="cb25-25"><a href="#cb25-25" aria-hidden="true" tabindex="-1"></a>        CREATE LOGIN [&lt;mydomain&gt;\&lt;myADlogin&gt;] FROM WINDOWS;</span>
-<span id="cb25-26"><a href="#cb25-26" aria-hidden="true" tabindex="-1"></a>        PRINT &#39;The &lt;mydomain&gt;\&lt;myADlogin&gt; login created successfully&#39;;</span>
-<span id="cb25-27"><a href="#cb25-27" aria-hidden="true" tabindex="-1"></a>      END</span>
-<span id="cb25-28"><a href="#cb25-28" aria-hidden="true" tabindex="-1"></a>      ELSE</span>
-<span id="cb25-29"><a href="#cb25-29" aria-hidden="true" tabindex="-1"></a>      BEGIN</span>
-<span id="cb25-30"><a href="#cb25-30" aria-hidden="true" tabindex="-1"></a>        PRINT &#39;A &lt;mydomain&gt;\&lt;myADlogin&gt; login already exists, skipping&#39;</span>
-<span id="cb25-31"><a href="#cb25-31" aria-hidden="true" tabindex="-1"></a>      END</span></code></pre></div>
+<span id="cb24-12"><a href="#cb24-12" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">mssql_ad_join</span><span class="kw">:</span><span class="at"> </span><span class="ch">false</span></span>
+<span id="cb24-13"><a href="#cb24-13" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">mssql_ad_sql_user</span><span class="kw">:</span><span class="at"> sqluser</span></span>
+<span id="cb24-14"><a href="#cb24-14" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">mssql_ad_kerberos_user</span><span class="kw">:</span><span class="at"> user_administrator</span></span>
+<span id="cb24-15"><a href="#cb24-15" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">mssql_ad_kerberos_password</span><span class="kw">:</span><span class="at"> Secret123</span></span>
+<span id="cb24-16"><a href="#cb24-16" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">ad_integration_realm</span><span class="kw">:</span><span class="at"> domain.com</span></span>
+<span id="cb24-17"><a href="#cb24-17" aria-hidden="true" tabindex="-1"></a><span class="fu">    mssql_post_input_sql_content</span><span class="kw">: </span><span class="ch">|-</span></span>
+<span id="cb24-18"><a href="#cb24-18" aria-hidden="true" tabindex="-1"></a>      USE master;</span>
+<span id="cb24-19"><a href="#cb24-19" aria-hidden="true" tabindex="-1"></a>      IF NOT EXISTS (</span>
+<span id="cb24-20"><a href="#cb24-20" aria-hidden="true" tabindex="-1"></a>        SELECT name FROM sys.server_principals</span>
+<span id="cb24-21"><a href="#cb24-21" aria-hidden="true" tabindex="-1"></a>        WHERE name = &#39;&lt;mydomain&gt;\&lt;myADlogin&gt;&#39;</span>
+<span id="cb24-22"><a href="#cb24-22" aria-hidden="true" tabindex="-1"></a>      )</span>
+<span id="cb24-23"><a href="#cb24-23" aria-hidden="true" tabindex="-1"></a>      BEGIN</span>
+<span id="cb24-24"><a href="#cb24-24" aria-hidden="true" tabindex="-1"></a>        PRINT &#39;A &lt;mydomain&gt;\&lt;myADlogin&gt; login does not exist, creating&#39;;</span>
+<span id="cb24-25"><a href="#cb24-25" aria-hidden="true" tabindex="-1"></a>        CREATE LOGIN [&lt;mydomain&gt;\&lt;myADlogin&gt;] FROM WINDOWS;</span>
+<span id="cb24-26"><a href="#cb24-26" aria-hidden="true" tabindex="-1"></a>        PRINT &#39;The &lt;mydomain&gt;\&lt;myADlogin&gt; login created successfully&#39;;</span>
+<span id="cb24-27"><a href="#cb24-27" aria-hidden="true" tabindex="-1"></a>      END</span>
+<span id="cb24-28"><a href="#cb24-28" aria-hidden="true" tabindex="-1"></a>      ELSE</span>
+<span id="cb24-29"><a href="#cb24-29" aria-hidden="true" tabindex="-1"></a>      BEGIN</span>
+<span id="cb24-30"><a href="#cb24-30" aria-hidden="true" tabindex="-1"></a>        PRINT &#39;A &lt;mydomain&gt;\&lt;myADlogin&gt; login already exists, skipping&#39;</span>
+<span id="cb24-31"><a href="#cb24-31" aria-hidden="true" tabindex="-1"></a>      END</span></code></pre></div>
 <h1 id="license">License</h1>
 <p>MIT</p>
 </article>
