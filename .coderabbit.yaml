@@ -1,7 +1,6 @@
 # yaml-language-server: $schema=https://coderabbit.ai/integrations/schema.v2.json
 # CodeRabbit configuration for linux-system-roles
 # Based on conventions from https://linux-system-roles.github.io/contribute.html
-# Replace <rolename> with actual role name when copying to other roles
 
 chat:
   art: false
@@ -47,7 +46,7 @@ reviews:
         - Must contain "Enhancement:" or "Feature:" section describing what changed
         - Must contain "Reason:" section explaining why the change was needed
         - Must contain "Result:" section describing the outcome or impact
-        - Must contain "Issue Tracker Tickets (Jira or BZ if any):" section (can be empty/none)
+        - Can contain optional "Issue Tracker Tickets (Jira or BZ if any):" section
 
         Example:
         ```
@@ -158,10 +157,15 @@ reviews:
     # ========================================
     # Variable Definitions - defaults/
     # ========================================
-    - path: "defaults/main.yml"
+    - path: "defaults/**/*.yml"
       instructions: |
         - All variables MUST be prefixed with `<rolename>_`
+        - All variables MUST be stored in the file defaults/main.yml, Ansible
+          doesn't include variables from other files.
         - These are user-facing API variables
+        - For every new variable introduced in this file, verify that it is
+          documented in README.md with a description and a usage example.
+          If it is missing from README.md, flag it and request that it be added.
 
     # ========================================
     # Variable Definitions - vars/
