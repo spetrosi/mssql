@@ -5,10 +5,25 @@
 chat:
   art: false
 
+finishing_touches:
+  unit_tests:
+    enabled: false
+
 reviews:
   # Disable fun features
   poem: false
   in_progress_fortune: false
+
+  # Disable auto-features
+  auto_apply_labels: false
+  auto_assign_reviewers: false
+  request_changes_workflow: false
+
+  # Disable additional review features
+  sequence_diagrams: false
+  estimate_code_review_effort: false
+  suggested_labels: false
+  high_level_summary_in_walkthrough: false
 
   path_instructions:
     # ========================================
