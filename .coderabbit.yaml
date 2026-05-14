@@ -61,14 +61,10 @@ reviews:
 
         **Pattern explanation:**
         - `__<rolename>_is_ostree` detects OSTree/rpm-ostree systems (RHEL/CentOS/Fedora variants)
+        - This variable should already exist in vars/main.yml - do NOT suggest adding it
         - `| d(false)` provides safe default if variable undefined
         - `ternary()` selects `ansible.posix.rhel_rpm_ostree` for OSTree, `omit` otherwise
         - `omit` removes the parameter entirely on non-OSTree Red Hat systems
-
-        **OSTree detection (in vars/main.yml):**
-        ```yaml
-        __<rolename>_is_ostree: "{{ ansible_facts['ostree-booted'] is defined }}"
-        ```
 
         **Third-party collections:**
         - Avoid using third-party collections (community.general, community.crypto, etc.)
