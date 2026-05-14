@@ -1,8 +1,65 @@
+# yaml-language-server: $schema=https://coderabbit.ai/integrations/schema.v2.json
 # CodeRabbit configuration for linux-system-roles
 # Based on conventions from https://linux-system-roles.github.io/contribute.html
 # Replace <rolename> with actual role name when copying to other roles
 
+chat:
+  art: false
+
 reviews:
+  # Disable fun features
+  poem: false
+  in_progress_fortune: false
+
+  # Disable auto-features
+  auto_apply_labels: false
+  auto_assign_reviewers: false
+  request_changes_workflow: false
+
+  # Disable additional review features
+  sequence_diagrams: false
+  estimate_code_review_effort: false
+  suggested_labels: false
+  high_level_summary_in_walkthrough: false
+
+  # Disable finishing touches
+  finishing_touches:
+    unit_tests:
+      enabled: false
+
+  # Enforce PR title and description requirements
+  pre_merge_checks:
+    title:
+      mode: "warning"
+      requirements: |
+        PR title MUST follow Conventional Commits format:
+        - Format: <type>: <description> or <type>!: <description> for breaking changes
+        - Valid types: feat, fix, docs, test, tests, refactor, ci, chore, build, perf, style, revert
+        - Examples:
+          - "feat: Add backup functionality"
+          - "fix: Correct OSTree package installation"
+          - "fix!: Remove deprecated variable (breaking change)"
+
+    description:
+      mode: "warning"
+      requirements: |
+        PR description MUST follow the template structure from .github/pull_request_template.md:
+        - Must contain "Enhancement:" or "Feature:" section describing what changed
+        - Must contain "Reason:" section explaining why the change was needed
+        - Must contain "Result:" section describing the outcome or impact
+        - Must contain "Issue Tracker Tickets (Jira or BZ if any):" section (can be empty/none)
+
+        Example:
+        ```
+        Feature: Introduce the <rolename>_secure_logging variable
+
+        Reason: Currently, all sensitive tasks use hard-coded no_log: true, which makes debugging difficult.
+
+        Result: Users can now set <rolename>_secure_logging: false for debugging while maintaining secure defaults.
+
+        Issue Tracker Tickets (Jira or BZ if any): RHEL-12345
+        ```
+
   path_instructions:
     # ========================================
     # Ansible Tasks - Core role logic
@@ -10,8 +67,22 @@ reviews:
     - path: "tasks/**/*.yml"
       instructions: |
         **no_log patterns:**
-        - For sensitive data (credentials, secrets, passwords, keys): use `no_log: "{{ <rolename>_secure_logging }}"` and set <rolename>_secure_logging to true in defaults/main.yml
-        - For facts modules (package_facts, service_facts): use `no_log: "{{ ansible_verbosity < 2 }}"`
+        - For sensitive data (credentials, secrets, passwords, keys):
+          ```yaml
+          - name: Task with sensitive data
+            ansible.builtin.command: sensitive command
+            no_log: "{{ <rolename>_secure_logging }}"
+          ```
+          Ensure `<rolename>_secure_logging: true` is defined in defaults/main.yml
+
+        - For facts modules (package_facts, service_facts):
+          ```yaml
+          - name: Gather package facts
+            ansible.builtin.package_facts:
+            no_log: "{{ ansible_verbosity < 3 }}"
+          ```
+          This hides verbose facts output unless running with -vvv or higher verbosity
+
         - NEVER use hardcoded `no_log: true` - always parametrize
 
         **Package installation (OSTree compatibility):**
@@ -39,14 +110,10 @@ reviews:
 
         **Pattern explanation:**
         - `__<rolename>_is_ostree` detects OSTree/rpm-ostree systems (RHEL/CentOS/Fedora variants)
+        - This variable should already exist in vars/main.yml - do NOT suggest adding it
         - `| d(false)` provides safe default if variable undefined
         - `ternary()` selects `ansible.posix.rhel_rpm_ostree` for OSTree, `omit` otherwise
         - `omit` removes the parameter entirely on non-OSTree Red Hat systems
-
-        **OSTree detection (in vars/main.yml):**
-        ```yaml
-        __<rolename>_is_ostree: "{{ ansible_facts['ostree-booted'] is defined }}"
-        ```
 
         **Third-party collections:**
         - Avoid using third-party collections (community.general, community.crypto, etc.)
@@ -119,12 +186,3 @@ reviews:
       instructions: |
         - Document all new user-facing variables
         - Include usage examples for new functionality
-
-    # ========================================
-    # PR Conventions (all files)
-    # ========================================
-    - path: "*"
-      instructions: |
-        **PR titles (Conventional Commits):**
-        - Format: `<type>: <description>` or `<type>!: <description>` (breaking change)
-        - Types: feat, fix, docs, test, refactor, ci, chore
