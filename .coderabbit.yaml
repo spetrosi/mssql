@@ -2,7 +2,14 @@
 # Based on conventions from https://linux-system-roles.github.io/contribute.html
 # Replace <rolename> with actual role name when copying to other roles
 
+chat:
+  art: false
+
 reviews:
+  # Disable fun features
+  poem: false
+  in_progress_fortune: false
+
   path_instructions:
     # ========================================
     # Ansible Tasks - Core role logic
